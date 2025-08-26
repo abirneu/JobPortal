@@ -136,3 +136,6 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'home'
 AUTH_USER_MODEL = 'jobs.User'
+
+from decouple import config
+ALLOWED_HOSTS = config("ALLOWED_HOSTS").split()
