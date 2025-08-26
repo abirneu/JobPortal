@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load job_tags %}
+
+{% block content %}
+<!-- Header Section -->
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="sm:flex sm:items-center sm:justify-between">
+        <div>
+            {% if job %}
+                <h1 class="text-3xl font-bold text-gray-900">Edit Job</h1>
+                <p class="mt-2 text-sm text-gray-600">Update your job posting details.</p>
+            {% else %}
+                <h1 class="text-3xl font-bold text-gray-900">Post a New Job</h1>
+                <p class="mt-2 text-sm text-gray-600">Create a job posting to find the perfect candidate for your position.</p>
+            {% endif %}
+        </div>
+        <div class="mt-4 sm:mt-0">
+            <a href="{% url 'dashboard' %}" 
+               class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 transition-all duration-200">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Form Section -->
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden">
+        <div class="bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500 px-6 py-4 relative">
+            <div class="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
+            <div class="relative z-10">
+                <h2 class="text-xl font-semibold text-white">Job Details</h2>
+                <p class="text-white/80 text-sm">Fill in the information below to create your job posting.</p>
+            </div>
+        </div>
+
+        <form method="post" class="p-6 space-y-8">
+            {% csrf_token %}
+            
+            {% for field in form %}
+            <div class="space-y-2">
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-900">
+                    {{ field.label }}
+                </label>
+                <div class="mt-1">
+                    {% if job %}
+                        {% with value=job|getattr:field.name %}
+                            {{ field|attr:"placeholder:Current value..."|attr:"value:"|attr:"data-original:"|add_value:value }}
+                        {% endwith %}
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                </div>
+                {% if field.help_text %}
+                    <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
+                {% endif %}
+                {% for error in field.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            <div class="pt-6 space-y-4">
+                <button type="submit" 
+                        class="w-full flex justify-center py-3 px-6 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 transition-all duration-300 hover:scale-[1.02]">
+                    {% if job %}
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        Update Job
+                    {% else %}
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        Post Job
+                    {% endif %}
+                </button>
+                {% if job %}
+                <p class="text-sm text-center text-gray-600">
+                    Making changes to an existing job post? The form is pre-filled with current values.
+                    Edit only the fields you want to update.
+                </p>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Tips Section -->
+
+
+<style>
+    /* Form field transitions */
+    input, textarea {
+        transition: all 0.3s ease !important;
+    }
+
+    input:focus, textarea:focus {
+        transform: translateY(-1px) !important;
+    }
+
+    /* Custom textarea scrollbar */
+    textarea::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    textarea::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    textarea::-webkit-scrollbar-thumb {
+        background: #d1d5db;
+        border-radius: 4px;
+    }
+
+    textarea::-webkit-scrollbar-thumb:hover {
+        background: #9ca3af;
+    }
+</style>
+{% endblock %}

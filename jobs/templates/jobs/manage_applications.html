@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Applications - {{ job.title }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto">
+        <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900">{{ job.title }}</h2>
+                    <p class="text-gray-600 mt-1">{{ job.company_name }}</p>
+                </div>
+                <a href="{% url 'dashboard' %}" class="text-blue-600 hover:text-blue-800 font-medium">
+                    ← Back to Dashboard
+                </a>
+            </div>
+
+  {% if applications %}
+    <div class="space-y-6">
+      {% for app in applications %}
+        <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition">
+          <div class="flex justify-between items-start flex-col md:flex-row gap-4">
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold text-gray-900">{{ app.applicant.username }}</h3>
+              <p class="text-sm text-gray-700 mt-1"><strong>Cover Letter:</strong> {{ app.cover_letter }}</p>
+              <p class="mt-2 text-sm">
+                <a href="{{ app.resume.url }}" class="text-blue-600 hover:underline" target="_blank">
+                  Download Resume
+                </a>
+              </p>
+              <p class="text-sm text-gray-400 mt-1">Applied on {{ app.applied_at|date:"F d, Y" }}</p>
+            </div>
+
+            <!-- Status & Action Buttons -->
+            <div class="flex flex-col items-end gap-2">
+              <!-- Status Badge -->
+              {% if app.status == 'approved' %}
+                <span class="px-3 py-1 text-sm bg-green-100 text-green-700 rounded-full">Approved</span>
+              {% elif app.status == 'rejected' %}
+                <span class="px-3 py-1 text-sm bg-red-100 text-red-700 rounded-full">Rejected</span>
+              {% else %}
+                <span class="px-3 py-1 text-sm bg-gray-200 text-gray-800 rounded-full">Pending</span>
+              {% endif %}
+
+              <!-- Form for status update -->
+              {% if app.status == 'pending' %}
+                <form method="POST" action="{% url 'update_application_status' app.id %}" class="flex gap-2">
+                  {% csrf_token %}
+                  <button type="submit" name="status" value="approved"
+                          class="px-3 py-1 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition">
+                    Approve
+                  </button>
+                  <button type="submit" name="status" value="rejected"
+                          class="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600 transition">
+                    Reject
+                  </button>
+                </form>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-gray-600 mt-4">No applications submitted for this job yet.</p>
+  {% endif %}
+
+  <div class="mt-8">
+    <a href="{% url 'dashboard' %}" class="text-blue-600 hover:underline">&larr; Back to Dashboard</a>
+  </div>
+</div>
+{% endblock %}
