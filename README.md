@@ -148,7 +148,7 @@ jobportal/
 4. Track application status
 5. Search and filter jobs
 
-## 🔒 Security Features
+##  Security Features
 
 - CSRF protection
 - Secure password hashing
@@ -156,7 +156,7 @@ jobportal/
 - Form validation
 - Secure file upload handling
 
-## 📸 Screenshots
+##  Screenshots
 
 ### Home Page
 ![Home Page](screenshots/home.png)
@@ -178,7 +178,7 @@ jobportal/
 ![Post Job](screenshots/post-job.png)
 *Description: Form for employers to create new job listings.*
 
-## 🤝 Contributing
+##  Contributing
 
 1. Fork the repository
 2. Create your feature branch
@@ -195,15 +195,15 @@ jobportal/
    ```
 5. Open a Pull Request
 
-## 📝 License
+##  License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👥 Authors
+##  Authors
 
 - Abir Hasan
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - Django documentation
 - Tailwind CSS team
