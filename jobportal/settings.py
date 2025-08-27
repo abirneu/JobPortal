@@ -137,5 +137,9 @@ LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'home'
 AUTH_USER_MODEL = 'jobs.User'
 
-from decouple import config
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost 127.0.0.1").split()
+# settings.py
+import os
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
